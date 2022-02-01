@@ -21,10 +21,16 @@ class Question1 extends React.Component<{}, State> {
     this.fetchCategories();
   }
 
-  onChangeKeyword = (event: React.ChangeEvent<HTMLInputElement>) => {
+  onChangeKeyword = async (event: React.ChangeEvent<HTMLInputElement>) => {
     let value = event.target.value;
 
+    this.setState({
+      keyword: value,
+    });
+
     if (value.trim()) {
+      await this.fetchCategories();
+
       const filterCategories = this.state.categories.reduce(
         (preCategories, currentCategory) => {
           const regex = new RegExp(value, "gi");
@@ -37,14 +43,9 @@ class Question1 extends React.Component<{}, State> {
       );
 
       this.setState({
-        keyword: value,
         categories: filterCategories,
       });
     } else {
-      this.setState({
-        keyword: value,
-      });
-
       this.fetchCategories();
     }
   };

@@ -25,18 +25,26 @@ class Question1 extends React.Component<{}, State> {
 
   onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     let value = event.target.value;
-    if (parseInt(value) < 0) {
-      this.setState({ input: "1" });
-    }
 
-    this.setState(
-      {
-        input: value,
-      },
-      () => {
-        this.calculate();
+    if (value && value.trim()) {
+      if (parseInt(value) < 0) {
+        this.setState({ input: "1" });
+      } else {
+        this.setState(
+          {
+            input: value,
+          },
+          () => {
+            this.calculate();
+          }
+        );
       }
-    );
+    } else {
+      this.setState({
+        input: value,
+        answer: "",
+      });
+    }
   };
 
   onChangecalculateMethod = (event: React.ChangeEvent<HTMLSelectElement>) => {
