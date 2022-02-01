@@ -8,19 +8,22 @@ const puppeteer = require('puppeteer');
         const funds = ['B-INCOMESSF', 'BM70SSF', 'BEQSSF', 'B-FUTURESSF'];
 
         const fundIndex = funds.findIndex(value => value === fundNameArg);
-
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.goto('https://codequiz.azurewebsites.net/');
-
-        await page.click('body > input[type="button"]');
-
-        const element = await page.waitForSelector(`body > table > tbody > tr:nth-child(${fundIndex + 2}) > td:nth-child(2)`); 
-        const value = await element.evaluate(el => el.textContent); 
-        console.log(value);
-        await browser.close();
+        if (fundIndex === -1) {
+            console.log('Could not find your fund code.');
+        } else {
+            const browser = await puppeteer.launch();
+            const page = await browser.newPage();
+            await page.goto('https://codequiz.azurewebsites.net/');
+    
+            await page.click('body > input[type="button"]');
+    
+            const element = await page.waitForSelector(`body > table > tbody > tr:nth-child(${fundIndex + 2}) > td:nth-child(2)`); 
+            const value = await element.evaluate(el => el.textContent); 
+            console.log(value);
+            await browser.close();
+        }
     } else {
-        console.log('Could not find your arg in cmd');
+        console.log('Could not find your arg in cmd.');
     }
 })();
 
